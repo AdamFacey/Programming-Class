@@ -26,6 +26,13 @@ function getDeltaTime()
 
 	return deltaTime;
 }
+var MAP = {tw:60, th:15};
+var TILE = 35;
+var TILESET_TILE = TILE * 2;
+var TILESET_PADDING = 2;
+var TILESET_SPACING = 2;
+var TILESET_COUNT_X = 14;
+var TILESET_COUNT_Y = 14;
 
 var METER = TILE;
 var GRAVITY = METER * 9.8 * 6;
@@ -40,13 +47,6 @@ var LAYER_BACKGROUND = 0;
 var LAYER_PLATFORMS = 1;
 var LAYER_LADDERS = 2;
 
-var MAP = {tw:60, th:15};
-var TILE = 35;
-var TILESET_TILE = TILE * 2;
-var TILESET_PADDING = 2;
-var TILESET_SPACING = 2;
-var TILESET_COUNT_X = 14;
-var TILESET_COUNT_Y = 14;
 
 //-------------------- Don't modify anything above here
 

@@ -49,7 +49,7 @@ Player.prototype.update = function(deltaTime)
 		ddx = ddx + FRICTION;
 
 	if (right)
-		ddx = ddx + ACCEl;
+		ddx = ddx + ACCEL;
 	else if (wasright)
 		ddx = ddx - FRICTION;
 
@@ -88,6 +88,33 @@ Player.prototype.update = function(deltaTime)
 			this.falling = false;
 			this.jumping = false;
 			ny = 0;
+		}
+	}
+	else if (this.velocity.y < 0)
+	{
+		if ((cell && !celldown) || (cellright && !celldiag && nx))
+		{
+			this.position.y = tileToPixel(ty + 1);
+			this.velocity.y = 0;
+			cell = celldown;
+			cellright = celldiag;
+			ny = 0;
+		}
+		if (this.velocity.x > 0)
+		{
+			if ((cellright && !cell) || (celldiag && !celldown && ny))
+			{
+				this.position.x = tileToPixel(tx);
+				this.velocity.x = 0;
+			}
+		}
+		else if (this.velocity.x < 0)
+		{
+			if ((cell && !cellright) || (celldown && !celldiag && ny))
+			{
+				this.position.x = tileToPixel(tx + 1);
+				this.velocity.x = 0;
+			}
 		}
 	}
 }

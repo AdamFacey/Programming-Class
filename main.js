@@ -92,8 +92,7 @@ function runSplash(deltaTime)
     context.font="12px Arial";
     context.fillText("Loading", 260, 250);
 }
-//function runGame()
-//{
+
 var cells =[];
 function initialize()
 {
@@ -183,8 +182,13 @@ function drawMap()
 		}
 	}
 }
+	
+function runGame(deltaTime)
+{
 	drawMap()
-//}
+	player.update(deltaTime);
+	player.draw();
+}
 
 function runGameOver(deltaTime)
 {
@@ -199,10 +203,7 @@ function run()
 	context.fillRect(0, 0, canvas.width, canvas.height);
 
 	var deltaTime = getDeltaTime();
-
-	player.update(deltaTime);
-	player.draw();
-
+	
 	switch(gameState)
 	{
 		case STATE_SPLASH:
@@ -235,7 +236,7 @@ function run()
 
 
 
-
+initialize();
 //-------------------- Don't modify anything below here
 
 

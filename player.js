@@ -7,6 +7,9 @@ var ANIM_WALK_LEFT = 2;
 var ANIM_IDLE_RIGHT = 3;
 var ANIM_JUMP_RIGHT = 4;
 var ANIM_WALK_RIGHT = 5;
+//var ANIM_SHOOT_LEFT = 6;
+//var ANIM_SHOOT_RIGHT = 7;
+//var ANIM_CLIMBING = 8;
 var ANIM_MAX = 6;
 
 var Player = function() 

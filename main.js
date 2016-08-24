@@ -10,6 +10,9 @@ var STATE_GAMEOVER = 2;
 
 var gameState = STATE_SPLASH;
 
+var score = 0;
+var lives = 3;
+
 // This function will return the time in seconds since the function 
 // was last called
 // You should only call this function once per frame
@@ -75,6 +78,24 @@ var keyboard = new Keyboard();
 
 var tileset = document.createElement("img");
 tileset.src = "tileset.png";
+
+function drawScore()
+{
+		context.fillStyle = "yellow";
+		context.font = "32px Arial";
+		context.fillText("score: " + score, SCREEN_WIDTH - 170, 35);
+}
+
+var heartImage = document.createElement("img");
+heartImage.src = "Life.png";
+
+function drawLife()
+{
+	for(var i = 0; i < lives; i++)
+	{
+		context.drawImage(heartImage, 10 + ((heartImage.width + 2) * i), 30);
+	}
+}
 
 var splashTimer = 3;
 function runSplash(deltaTime)
@@ -188,6 +209,8 @@ function runGame(deltaTime)
 	drawMap()
 	player.update(deltaTime);
 	player.draw();
+	drawScore();
+	drawLife();
 }
 
 function runGameOver(deltaTime)

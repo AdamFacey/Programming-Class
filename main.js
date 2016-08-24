@@ -4,6 +4,12 @@ var context = canvas.getContext("2d");
 var startFrameMillis = Date.now();
 var endFrameMillis = Date.now();
 
+var STATE_SPLASH = 0;
+var STATE_GAME = 1;
+var STATE_GAMEOVER = 2;
+
+var gameState = STATE_SPLASH;
+
 // This function will return the time in seconds since the function 
 // was last called
 // You should only call this function once per frame
@@ -47,7 +53,6 @@ var LAYER_BACKGROUND = 0;
 var LAYER_PLATFORMS = 1;
 var LAYER_LADDERS = 2;
 
-
 //-------------------- Don't modify anything above here
 
 var SCREEN_WIDTH = canvas.width;
@@ -71,6 +76,24 @@ var keyboard = new Keyboard();
 var tileset = document.createElement("img");
 tileset.src = "tileset.png";
 
+var splashTimer = 3;
+function runSplash(deltaTime)
+{
+    splashTimer -= deltaTime;
+    if(splashTimer <= 0)
+    {
+        gameState = STATE_GAME;
+        return;
+    }
+
+    context.fillStyle = "#000";
+    context.font="30px Arial";
+    context.fillText("Platformer", 200, 150);
+    context.font="12px Arial";
+    context.fillText("Loading", 260, 250);
+}
+//function runGame()
+//{
 var cells =[];
 function initialize()
 {
@@ -160,6 +183,15 @@ function drawMap()
 		}
 	}
 }
+	drawMap()
+//}
+
+function runGameOver(deltaTime)
+{
+		context.fillStyle = "#000";
+    context.font="30px Arial";
+    context.fillText("GAME OVER", 200, 150);
+}
 
 function run() 
 {
@@ -167,9 +199,23 @@ function run()
 	context.fillRect(0, 0, canvas.width, canvas.height);
 
 	var deltaTime = getDeltaTime();
-	drawMap()
+
 	player.update(deltaTime);
 	player.draw();
+
+	switch(gameState)
+	{
+		case STATE_SPLASH:
+			runSplash(deltaTime);
+			break;
+		case STATE_GAME:
+			runGame(deltaTime);
+		//	initialize();
+			break;
+		case STATE_GAMEOVER:
+			runGameOver(deltaTime);
+			break;
+	}
 
 	// update the frame counter 
 	fpsTime += deltaTime;
@@ -187,7 +233,7 @@ function run()
 	context.fillText("FPS: " + fps, 5, 20, 100);
 }
 
-initialize();
+
 
 
 //-------------------- Don't modify anything below here

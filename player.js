@@ -43,6 +43,9 @@ var Player = function()
 	this.position = new vector2();
 	this.position.set( 9*TILE, 0*TILE );
 
+	this.reset = new vector2();
+	this.reset.set( 9*TILE, 0*TILE );
+
 	this.width = 159;
 	this.height = 163;
 
@@ -51,7 +54,9 @@ var Player = function()
 	this.falling = true;
 	this.jumping = false;	
 
-	this.direction = LEFT;  
+	this.direction = LEFT; 
+
+	this.cooldownTimer = 0; 
 };
 
 Player.prototype.update = function(deltaTime)
@@ -201,6 +206,16 @@ Player.prototype.update = function(deltaTime)
 				this.position.x = tileToPixel(tx + 1);
 				this.velocity.x = 0;
 			}
+		}
+	}
+	if( this.position.y > 600)
+	{
+		//lose life
+		this.position.set(this.reset.x, this.reset.y);
+		lives -= 1;
+		if( lives == 0)
+		{
+			gameState = STATE_GAMEOVER
 		}
 	}
 }

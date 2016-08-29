@@ -117,6 +117,25 @@ function runSplash(deltaTime)
 var cells =[];
 function initialize()
 {
+	musicBackground = new Howl(
+		{
+			urls: ["background.ogg"],
+			loop: true,
+			buffer: true,
+			volume: 0.01
+		});
+		musicBackground.play();
+
+		sfxFire = new Howl(
+			{
+				urls: ["fireEffect.ogg"],
+				buffer: true,
+				volume: 1,
+				onend: function()
+				{
+					isSfxPlaying = false;
+				}
+});
 	for(var layerIdx = 0; layerIdx < LAYER_COUNT; layerIdx++)
 	{
 		cells[layerIdx] = [];
@@ -313,27 +332,7 @@ initialize();
     onEachFrame = function (cb) 
 		{
       setInterval(cb, 1000 / 60);
-    }
-	musicBackground = new Howl(
-		{
-			urls: ["background.ogg"],
-			loop: true,
-			buffer: true,
-			volume: 0.5
-		});
-		console.log = "Play"
-		musicBackground.play();
-
-		sfxFire = new Howl(
-			{
-				urls: ["fireEffect.ogg"],
-				buffer: true,
-				volume: 1,
-				onend: function()
-				{
-					isSfxPlaying = false;
-				}
-			}); 
+    } 
   }
 
   window.onEachFrame = onEachFrame;

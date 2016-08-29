@@ -105,6 +105,19 @@ Player.prototype.update = function(deltaTime)
 			this.sprite.setAnimation(ANIM_JUMP_RIGHT)
 		}
 	}
+	if(keyboard.isKeyDown(keyboard.KEY_UP) == true)
+	{
+		jump = true;
+	}
+	if(this.cooldownTimer > 0)
+	{
+		this.cooldownTimer -= deltaTime;
+	}
+	if(keyboard.isKeyDown(keyboard.KEY_SPACE) == true && this.cooldownTimer <= 0)
+	{
+		sfxFire.play();
+		this.cooldownTimer = 0.3;
+	}
 
 	var wasleft = this.velocity.x < 0;
 	var wasright = this.velocity.x > 0;

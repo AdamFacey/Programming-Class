@@ -182,22 +182,22 @@ function bound(value, min, max)
 
 var worldOffsetX = 0;
 function drawMap()
-{console.log("draw call")
+{
 	var startX = -1;
 	var maxTiles = Math.floor(SCREEN_WIDTH / TILE) + 2;
 	var tileX = pixelToTile(player.position.x);
-	var offsetX = TILE + Math.floor(player.position.x%TILE);
+	var offsetX = TILE + Math.floor(player.position.x % TILE);
 
 	startX = tileX - Math.floor(maxTiles / 2);
 
-	if(startX < -1)
+	if (startX < - 1)
 	{
 		startX = 0;
 		offsetX = 0;
 	}
-	if(startX = MAP.tw - maxTiles)
+	if (startX > MAP.tw - maxTiles)
 	{
-		startX = MAP.tw - maxTiles +1;
+		startX = MAP.tw - maxTiles + 1;
 		offsetX = TILE;
 	}
 
@@ -216,9 +216,12 @@ function drawMap()
 					// the tiles in the Tiled map are base 1 (meaning a value of 0 means no tile), so subtract one from the tileset id to get the
 					// correct tile
 					var tileIndex = level1.layers[layerIdx].data[idx] - 1;
-					var sx = TILESET_PADDING + (tileIndex % TILESET_COUNT_X) * (TILESET_TILE + TILESET_SPACING);
-					var sy = TILESET_PADDING + (Math.floor(tileIndex / TILESET_COUNT_X)) * (TILESET_TILE + TILESET_SPACING);
-					context.drawImage(tileset, sx, sy, TILESET_TILE, TILESET_TILE, x*TILE, (y-1)*TILE, TILESET_TILE, TILESET_TILE);
+					var sx = TILESET_PADDING + (tileIndex % TILESET_COUNT_X) * 
+						(TILESET_TILE + TILESET_SPACING);
+					var sy = TILESET_PADDING + (Math.floor(tileIndex / TILESET_COUNT_X)) * 
+						(TILESET_TILE + TILESET_SPACING);
+					context.drawImage(tileset, sx, sy, TILESET_TILE, TILESET_TILE, (x-startX) * 
+						TILE - offsetX, (y-1)*TILE, TILESET_TILE, TILESET_TILE);
 				}
 				idx++;
 			}
@@ -237,7 +240,7 @@ function runGame(deltaTime)
 
 function runGameOver(deltaTime)
 {
-		context.fillStyle = "#000";
+	context.fillStyle = "#000";
     context.font="30px Arial";
     context.fillText("GAME OVER", 200, 150);
 }
@@ -279,7 +282,8 @@ function run()
 	context.fillText("FPS: " + fps, 5, 20, 100);
 }
 
-
+var musicBackground;
+var sfxFire;
 
 initialize();
 //-------------------- Don't modify anything below here
@@ -310,6 +314,26 @@ initialize();
 		{
       setInterval(cb, 1000 / 60);
     }
+	musicBackground = new Howl(
+		{
+			urls: ["background.ogg"],
+			loop: true,
+			buffer: true,
+			volume: 0.5
+		});
+		console.log = "Play"
+		musicBackground.play();
+
+		sfxFire = new Howl(
+			{
+				urls: ["fireEffect.ogg"],
+				buffer: true,
+				volume: 1,
+				onend: function()
+				{
+					isSfxPlaying = false;
+				}
+			}); 
   }
 
   window.onEachFrame = onEachFrame;

@@ -118,11 +118,19 @@ Player.prototype.update = function(deltaTime)
 	{
 		this.cooldownTimer -= deltaTime;
 	}
-	if(keyboard.isKeyDown(keyboard.KEY_SPACE) == true && this.cooldownTimer <= 0)
+	if(ammo <= 0) 
+	{
+		context.fillStyle = "#000";
+		context.font="20px Arial";
+    	context.fillText("Reload", 25, 77);
+	}
+	if(keyboard.isKeyDown(keyboard.KEY_SPACE) == true && this.cooldownTimer <= 0 && ammo >= 1)
 	{
 		sfxFire.play();
+		ammo -= 1;
 		this.cooldownTimer = 0.3;
 	}
+	
 
 	var wasleft = this.velocity.x < 0;
 	var wasright = this.velocity.x > 0;
@@ -217,6 +225,10 @@ Player.prototype.update = function(deltaTime)
 		{
 			gameState = STATE_GAMEOVER
 		}
+	}
+	if(cellAtTileCoord(LAYER_OBJECT_TRIGGERS, tx,ty) == true)
+	{
+		gameState = STATE_GAMEWIN
 	}
 }
 

@@ -7,11 +7,13 @@ var endFrameMillis = Date.now();
 var STATE_SPLASH = 0;
 var STATE_GAME = 1;
 var STATE_GAMEOVER = 2;
+var STATE_GAMEWIN = 3;
 
 var gameState = STATE_SPLASH;
 
 var score = 0;
 var lives = 3;
+var ammo = 10;
 
 // This function will return the time in seconds since the function 
 // was last called
@@ -55,6 +57,8 @@ var LAYER_COUNT = 3;
 var LAYER_BACKGROUND = 0;
 var LAYER_PLATFORMS = 1;
 var LAYER_LADDERS = 2;
+var LAYER_OBJECT_ENEMIES = 3;
+var LAYER_OBJECT_TRIGGERS = 4;
 
 //-------------------- Don't modify anything above here
 
@@ -97,6 +101,17 @@ function drawLife()
 	}
 }
 
+var Ammo = document.createElement("img");
+Ammo.src = "Ammo.png";
+
+function drawAmmo()
+{
+	for(var i = 0; i < ammo; i++)
+	{
+		context.drawImage(Ammo, 10 + ((Ammo.width +2) * i), 60);
+	}
+}
+
 var splashTimer = 3;
 function runSplash(deltaTime)
 {
@@ -135,7 +150,28 @@ function initialize()
 				{
 					isSfxPlaying = false;
 				}
-});
+			});
+	cells[LAYER_OBJECT_TRIGGERS] = [];
+	idx = 0;
+	for(var y = 0; y< level1.layers[LAYER_OBJECT_TRIGGERS].height; y++)
+	{
+		cells[LAYER_OBJECT_TRIGGERS][y] = [];
+		for(var x =0; x< level1.layers[LAYER_OBJECT_TRIGGERS].width;x++)
+		{
+			if(level1.layers[LAYER_OBJECT_TRIGGERS].data[idx] != 0)
+			{
+				cells[LAYER_OBJECT_TRIGGERS][y][x] =1;
+				cells[LAYER_OBJECT_TRIGGERS][y-1][x] =1;
+				cells[LAYER_OBJECT_TRIGGERS][y-1][x+1] = 1;
+				cells[LAYER_OBJECT_TRIGGERS][y][x+1] = 1;
+			}
+			else if(cells[LAYER_OBJECT_TRIGGERS][y][x] != 1)
+			{
+				cells[LAYER_OBJECT_TRIGGERS][y][x] = 0;
+			}
+			idx++;
+		}
+	}
 	for(var layerIdx = 0; layerIdx < LAYER_COUNT; layerIdx++)
 	{
 		cells[layerIdx] = [];
@@ -255,6 +291,14 @@ function runGame(deltaTime)
 	player.draw();
 	drawScore();
 	drawLife();
+	drawAmmo();
+}
+
+function runGameWin(deltaTime)
+{
+	context.fillStyle = "#000";
+    context.font="30px Arial";
+    context.fillText("WINNER", 200, 150);
 }
 
 function runGameOver(deltaTime)
@@ -278,10 +322,12 @@ function run()
 			break;
 		case STATE_GAME:
 			runGame(deltaTime);
-		//	initialize();
 			break;
 		case STATE_GAMEOVER:
 			runGameOver(deltaTime);
+			break;
+		case STATE_GAMEWIN:
+			runGameWin(deltaTime);
 			break;
 	}
 

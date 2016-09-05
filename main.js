@@ -54,6 +54,11 @@ var ACCEL = MAXDX * 2;
 var FRICTION = MAXDX * 6;
 var JUMP = METER * 1500;
 
+var ENEMY_MAXDX = METER * 5;
+var ENEMY_ACCEL = ENEMY_MAXDX * 2;
+
+var enemies = [];
+
 var LAYER_COUNT = 3;
 var LAYER_BACKGROUND = 0;
 var LAYER_PLATFORMS = 1;
@@ -113,15 +118,17 @@ function drawAmmo()
 	}
 }
 
-var bullets = document.createElement("img");
-bullets.src = "bullet.png";
+var bulletsIcon = document.createElement("img");
+bulletsIcon.src = "bullet.png";
 
 function playerShoot()
 {
-	for(var i=0; i<ammo; i++)
+	/*for(var i=0; i<ammo; i++)
 	{
 		context.drawImage(bullets, player.position.x, player.position.y)
-	}
+	}*/
+	var newBullet = new Bullet(player.position.x, player.position.y, (!player.direction == LEFT));
+	bullets.push(newBullet);
 }
 
 var splashTimer = 3;
@@ -141,21 +148,7 @@ function runSplash(deltaTime)
     context.fillText("Loading", 260, 250);
 }
 
-var hit = false;
-for(var i=0; i<bullets.length; i++)
-{
-	bullets[i].update(deltaTime);
-	if(bullets[i].position.x - worldOffsetX < 0 ||
-		bullets[i].position.x - worldOffsetX > SCREEN_WIDTH)
-	{
-		hit = true;
-	}
-	if(hit == true)
-	{
-		bullets.splice(i, 1);
-		break;
-	}
-}
+
 
 var cells =[];
 function initialize()
@@ -222,6 +215,20 @@ function initialize()
 				}
 				idx++;
 			}
+		}
+	}
+	for(var y = 0; y < level1.layers[LAYER_OBJECT_ENEMIES].height; y++)
+	{
+		for(var x = 0; x < level1.layers[LAYER_OBJECT_ENEMIES].width; x++)
+		{
+			if(level1.layers[LAYER_OBJECT_ENEMIES].data[idx] !=0)
+			{
+				var px = tileToPixel(x);
+				var py = tileToPixel(y);
+				var e = new Enemy(px, py);
+				enemies.push(e);
+			}
+			idx++;
 		}
 	}
 }
@@ -320,6 +327,27 @@ function runGame(deltaTime)
 	drawScore();
 	drawLife();
 	drawAmmo();
+
+	for(var i=0; i<enemies.length; i++)
+	{
+		enemies[i].update(deltaTime);
+	}
+
+	var hit = false;
+	for(var i=0; i<bullets.length; i++)
+	{
+		bullets[i].update(deltaTime);
+		bullets[i].draw();
+		if(bullets[i].position.x - worldOffsetX < 0 || bullets[i].position.x - worldOffsetX > SCREEN_WIDTH)
+		{
+			hit = true;
+		}
+		if(hit == true)
+		{
+			bullets.splice(i, 1);
+			break;
+		}
+	}
 }
 
 function runGameWin(deltaTime)

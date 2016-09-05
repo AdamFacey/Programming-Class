@@ -124,10 +124,12 @@ Player.prototype.update = function(deltaTime)
 		context.font="20px Arial";
     	context.fillText("Reload", 25, 77);
 	}
-	if(keyboard.isKeyDown(keyboard.KEY_SPACE) == true && this.cooldownTimer <= 0 && ammo >= 1)
+	if(keyboard.isKeyDown(keyboard.KEY_SPACE) == true && this.cooldownTimer <= 0 && 
+		ammo >= 1)
 	{
 		sfxFire.play();
 		ammo -= 1;
+		playerShoot();
 		this.cooldownTimer = 0.3;
 	}
 	

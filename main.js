@@ -14,6 +14,7 @@ var gameState = STATE_SPLASH;
 var score = 0;
 var lives = 3;
 var ammo = 10;
+var bullets = [];
 
 // This function will return the time in seconds since the function 
 // was last called
@@ -112,6 +113,17 @@ function drawAmmo()
 	}
 }
 
+var bullets = document.createElement("img");
+bullets.src = "bullet.png";
+
+function playerShoot()
+{
+	for(var i=0; i<ammo; i++)
+	{
+		context.drawImage(bullets, player.position.x, player.position.y)
+	}
+}
+
 var splashTimer = 3;
 function runSplash(deltaTime)
 {
@@ -127,6 +139,22 @@ function runSplash(deltaTime)
     context.fillText("Platformer", 200, 150);
     context.font="12px Arial";
     context.fillText("Loading", 260, 250);
+}
+
+var hit = false;
+for(var i=0; i<bullets.length; i++)
+{
+	bullets[i].update(deltaTime);
+	if(bullets[i].position.x - worldOffsetX < 0 ||
+		bullets[i].position.x - worldOffsetX > SCREEN_WIDTH)
+	{
+		hit = true;
+	}
+	if(hit == true)
+	{
+		bullets.splice(i, 1);
+		break;
+	}
 }
 
 var cells =[];

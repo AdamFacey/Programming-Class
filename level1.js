@@ -39,7 +39,7 @@ var level1 = { "height":15,
          "name":"Enemies",
          "opacity":1,
          "type":"tilelayer",
-         "visible":true,
+         "visible":false,
          "width":60,
          "x":0,
          "y":0

@@ -1,35 +1,37 @@
-var ANIM_IDLE_LEFT = 0;
-var ANIM_WALK_LEFT = 1;
-var ANIM_IDLE_RIGHT = 2;
-var ANIM_WALK_RIGHT = 3;
-var ANIM_MAX = 4;
+var ENEMY_ANIM_IDLE_LEFT = 0;
+var ENEMY_ANIM_WALK_LEFT = 1;
+var ENEMY_ANIM_IDLE_RIGHT = 2;
+var ENEMY_ANIM_WALK_RIGHT = 3;
+var ENEMY_ANIM_MAX = 4;
 
 var Enemy = function(x, y) 
 {	
 	this.sprite = new Sprite("Enemy.png");
 	this.sprite.buildAnimation(12, 8, 165, 126, 0.05,
 		[0, 1, 2, 3, 4, 5, 6, 7]);
-	this.sprite.setAnimationOffset(0, -55, -87)
-	/*this.sprite.buildAnimation(12, 8, 165, 126, 0.05,
+	//this.sprite.setAnimationOffset(0, -55, -87)
+	this.sprite.buildAnimation(12, 8, 165, 126, 0.05,
 		[13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26]);
 	this.sprite.buildAnimation(12, 8, 165, 126, 0.05,
 		[52, 53, 54, 55, 56, 57, 58, 59]);
 	this.sprite.buildAnimation(12, 8, 165, 126, 0.05,
 		[65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78]);
 
-	for(var i=0; i<ANIM_MAX; i++)
+	for(var i=0; i<ENEMY_ANIM_MAX; i++)
 	{
 		this.sprite.setAnimationOffset(i, -55, -87);
-	}*/
+	}
 
 	this.position = new vector2();
 	this.position.set(x, y);
 
 	this.velocity = new vector2();
-	this.velocity.set = (0, 0)
+	this.velocity.set(0, 0)
 
 	this.moveRight = true;
 	this.pause = 0;	
+
+	this.sprite.setAnimation(ENEMY_ANIM_WALK_RIGHT)
 };
 
 Enemy.prototype.update = function(dt)
@@ -58,12 +60,18 @@ Enemy.prototype.update = function(dt)
 			if(celldiag && !cellright)
 			{
 				ddx = ddx + ENEMY_ACCEL;
+				
 			}
 			else
 			{
 				this.velocity.x = 0;
 				this.moveRight = false;
+				this.sprite.setAnimation(ENEMY_ANIM_WALK_LEFT)
 				this.pause = 0.5;
+				if(this.velocity.x >= 0)
+				{
+					this.sprite.setAnimation(ENEMY_ANIM_IDLE_RIGHT)
+				}
 			}
 		}
 
@@ -76,7 +84,8 @@ Enemy.prototype.update = function(dt)
 			else
 			{
 				this.velocity.x = 0;
-				this.moveRight = false;
+				this.moveRight = true;
+				this.sprite.setAnimation(ENEMY_ANIM_WALK_RIGHT)
 				this.pause = 0.5;
 			}
 		}
@@ -89,5 +98,4 @@ Enemy.prototype.update = function(dt)
 Enemy.prototype.draw = function()
 {
 	this.sprite.draw(context, this.position.x - worldOffsetX, this.position.y);
-	console.log("work")
 }

@@ -217,6 +217,7 @@ function initialize()
 			}
 		}
 	}
+	idx = 0;
 	for(var y = 0; y < level1.layers[LAYER_OBJECT_ENEMIES].height; y++)
 	{
 		for(var x = 0; x < level1.layers[LAYER_OBJECT_ENEMIES].width; x++)
@@ -327,10 +328,12 @@ function runGame(deltaTime)
 	drawScore();
 	drawLife();
 	drawAmmo();
+	
 
 	for(var i=0; i<enemies.length; i++)
 	{
 		enemies[i].update(deltaTime);
+		enemies[i].draw();
 	}
 
 	var hit = false;

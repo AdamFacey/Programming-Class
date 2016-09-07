@@ -1,6 +1,3 @@
-var LEFT = 0;
-var RIGHT =1;
-
 var ANIM_IDLE_LEFT = 0;
 var ANIM_WALK_LEFT = 1;
 var ANIM_IDLE_RIGHT = 2;
@@ -12,12 +9,18 @@ var Enemy = function(x, y)
 	this.sprite = new Sprite("Enemy.png");
 	this.sprite.buildAnimation(12, 8, 165, 126, 0.05,
 		[0, 1, 2, 3, 4, 5, 6, 7]);
-	this.sprite.buildAnimation(12, 8, 165, 126, 0.05,
+	this.sprite.setAnimationOffset(0, -55, -87)
+	/*this.sprite.buildAnimation(12, 8, 165, 126, 0.05,
 		[13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26]);
 	this.sprite.buildAnimation(12, 8, 165, 126, 0.05,
 		[52, 53, 54, 55, 56, 57, 58, 59]);
 	this.sprite.buildAnimation(12, 8, 165, 126, 0.05,
 		[65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78]);
+
+	for(var i=0; i<ANIM_MAX; i++)
+	{
+		this.sprite.setAnimationOffset(i, -55, -87);
+	}*/
 
 	this.position = new vector2();
 	this.position.set(x, y);
@@ -85,4 +88,5 @@ Enemy.prototype.update = function(dt)
 Enemy.prototype.draw = function()
 {
 	this.sprite.draw(context, this.position.x - worldOffsetX, this.position.y);
+	console.log("work")
 }

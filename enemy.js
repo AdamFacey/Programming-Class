@@ -60,18 +60,19 @@ Enemy.prototype.update = function(dt)
 			if(celldiag && !cellright)
 			{
 				ddx = ddx + ENEMY_ACCEL;
-				
+				if(this.sprite.currentAnimation != ENEMY_ANIM_WALK_RIGHT && this.velocity.x < -0.5)
+					this.sprite.setAnimation(ENEMY_ANIM_WALK_RIGHT)
 			}
 			else
 			{
 				this.velocity.x = 0;
 				this.moveRight = false;
-				this.sprite.setAnimation(ENEMY_ANIM_WALK_LEFT)
+				this.sprite.setAnimation(ENEMY_ANIM_IDLE_LEFT)
 				this.pause = 0.5;
-				if(this.velocity.x >= 0)
+				/*if(this.velocity.x >= 0)
 				{
 					this.sprite.setAnimation(ENEMY_ANIM_IDLE_RIGHT)
-				}
+				}*/
 			}
 		}
 
@@ -80,12 +81,14 @@ Enemy.prototype.update = function(dt)
 			if(celldown && !cell)
 			{
 				ddx =ddx - ENEMY_ACCEL;
-			}
+				if(this.sprite.currentAnimation != ENEMY_ANIM_WALK_LEFT && this.velocity.x < -0.5)
+					this.sprite.setAnimation(ENEMY_ANIM_WALK_LEFT)
+				
 			else
 			{
 				this.velocity.x = 0;
 				this.moveRight = true;
-				this.sprite.setAnimation(ENEMY_ANIM_WALK_RIGHT)
+				this.sprite.setAnimation(ENEMY_ANIM_IDLE_RIGHT)
 				this.pause = 0.5;
 			}
 		}
